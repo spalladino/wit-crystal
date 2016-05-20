@@ -27,6 +27,17 @@ crystal examples/understand.cr <access-token> In Buenos Aires
 >  location=[{"confidence" => 0.957859, "type" => "value", "value" => "Buenos Aires", "suggested" => true}]
 ```
 
+### Context
+
+Shows how using a context changes how message entities are understood, by processing message _Last week_ both with and without a reference time.
+
+```bash
+crystal examples/context.cr <access-token>
+> Understanding message 'Last week'
+>  Without context:  2016-05-09T00:00:00.000-07:00
+>  Ref 2012-03-08:   2012-02-27T00:00:00.000Z
+```
+
 ### Quickstart
 
 The code for the [quickstart weather application](https://wit.ai/docs/quickstart) can be executed by running:
@@ -47,7 +58,6 @@ Refer to the examples folder for sample usage.
 
 ## TODOs
 
-* Add example on using context for message understanding
 * Generate and upload documentation
 * Add more specs using webmock or similar tool
 

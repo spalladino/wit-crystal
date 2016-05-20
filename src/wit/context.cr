@@ -39,5 +39,9 @@ module Wit
       entities: { type: Array(Entity), default: Array(Entity).new },
       location: { type: Wit::Location, nilable: true }
     })
+
+    def initialize(@state = Array(String).new, @reference_time = nil, @timezone = nil, @entities = Array(Entity).new, @location = nil)
+    end
+
   end
 end
