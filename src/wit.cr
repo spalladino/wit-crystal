@@ -14,6 +14,7 @@ module Wit
 
   class App
     getter logger
+    getter actions
 
     def initialize(@access_token : String, @actions : Wit::Actions = NullActions.new, @logger : Logger = Logger.new(STDOUT).tap { |logger| logger.level = Logger::INFO })
     end
