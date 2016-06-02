@@ -19,10 +19,9 @@ module Wit
     def initialize(@access_token : String, @actions : Wit::Actions = NullActions.new, @logger : Logger = Logger.new(STDOUT).tap { |logger| logger.level = Logger::INFO })
     end
 
-    def message(msg : String, context : Context? = nil, msg_id : String? = nil, thread_id : String? = nil)
-      logger.debug "Message request: msg='#{msg}' context=#{context.inspect}"
+    def message(msg : String, msg_id : String? = nil, thread_id : String? = nil)
+      logger.debug "Message request: msg='#{msg}'"
       params = { "q" => msg, "msg_id" => msg_id, "thread_id" => thread_id }
-      params["context"] = context.to_json if context
       res = request "GET", "/message", MessageResponse, params
       logger.debug "Message response: #{res.inspect}"
       return res as MessageResponse
