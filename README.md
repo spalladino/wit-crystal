@@ -2,7 +2,7 @@
 
 [Crystal](http://crystal-lang.org/) SDK for [Wit.ai](http://wit.ai).
 
-Supports Wit.ai API version `20160516`.
+Supports Wit.ai API version `20160526`.
 Runs on Crystal `>= 0.17.2`.
 
 ## Installation
