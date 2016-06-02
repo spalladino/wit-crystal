@@ -46,7 +46,7 @@ module Wit
 
       headers = HTTP::Headers.new
       headers.add("authorization", "Bearer #{@access_token}")
-      headers.add("accept", "application/vnd.wit.20160519+json")
+      headers.add("accept", "application/vnd.wit.20160526+json")
       headers.add("Content-Type", "application/json")
 
       response = HTTP::Client.exec(method, uri, headers, payload.try(&.to_json))
