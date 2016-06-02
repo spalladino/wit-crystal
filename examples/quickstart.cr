@@ -13,22 +13,22 @@ class QuickstartActions
 
   include Wit::Actions
 
-  def say(session_id, context, message)
+  def say(session_id, context, message, confidence)
     p message
   end
 
-  def merge(session_id, context, entities, msg)
+  def merge(session_id, context, entities, msg, confidence)
     loc = first_entity_value entities, "location"
     context["loc"] = loc unless loc.nil?
     context
   end
 
-  def error(session_id, context, error)
+  def error(session_id, context, error, confidence)
     p error.message
     context
   end
 
-  def custom(action_name, session_id, context)
+  def custom(action_name, session_id, context, confidence)
     case action_name
     when "fetch-weather"
       context["forecast"] = "sunny"

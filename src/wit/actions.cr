@@ -4,10 +4,10 @@ module Wit
 
   module Actions
 
-    abstract def say(session_id : String, context : Wit::State, message : String)
-    abstract def merge(session_id : String, context : Wit::State, entities : Hash(String, Array(JSON::Any)), msg : String?) : Wit::State
-    abstract def error(session_id : String, context : Wit::State, error : WitException) : Wit::State
-    abstract def custom(action_name : String, session_id : String, context : Wit::State) : Wit::State
+    abstract def say(session_id : String, context : Wit::State, message : String, confidence : Float64)
+    abstract def merge(session_id : String, context : Wit::State, entities : Hash(String, Array(JSON::Any)), msg : String?, confidence : Float64) : Wit::State
+    abstract def error(session_id : String, context : Wit::State, error : WitException, confidence : Float64) : Wit::State
+    abstract def custom(action_name : String, session_id : String, context : Wit::State, confidence : Float64) : Wit::State
 
   end
 
@@ -15,18 +15,18 @@ module Wit
 
     include Actions
 
-    def say(session_id : String, context : Wit::State, message : String)
+    def say(session_id : String, context : Wit::State, message : String, confidence : Float64)
     end
 
-    def merge(session_id : String, context : Wit::State, entities : Hash(String, Array(JSON::Any)), msg : String?) : Wit::State
+    def merge(session_id : String, context : Wit::State, entities : Hash(String, Array(JSON::Any)), msg : String?, confidence : Float64) : Wit::State
       context
     end
 
-    def error(session_id : String, context : Wit::State, error : WitException) : Wit::State
+    def error(session_id : String, context : Wit::State, error : WitException, confidence : Float64) : Wit::State
       context
     end
 
-    def custom(action_name : String, session_id : String, context : Wit::State) : Wit::State
+    def custom(action_name : String, session_id : String, context : Wit::State, confidence : Float64) : Wit::State
       context
     end
 

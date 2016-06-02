@@ -70,26 +70,26 @@ module Wit
       begin
         response = converse session_id, message, context
       rescue ex : WitException
-        logger.info "Executing error #{ex.to_s}"
-        return @actions.error(session_id, context, ex)
+        logger.info "Execution error #{ex.to_s}"
+        return @actions.error(session_id, context, ex, 1.0)
       end
 
       return context if response.type == "stop"
       if response.type == "msg"
         msg = response.msg.not_nil!
-        logger.info "Executing say with: #{msg}"
-        @actions.say session_id, context.clone, msg
+        logger.info "Executing say with: #{msg} (#{response.confidence})"
+        @actions.say session_id, context.clone, msg, response.confidence
       elsif response.type == "merge"
         entities = response.entities.not_nil!
-        logger.info "Executing merge with #{entities.inspect}"
-        context = @actions.merge session_id, context.clone, entities, user_message
+        logger.info "Executing merge with #{entities.inspect} (#{response.confidence})"
+        context = @actions.merge session_id, context.clone, entities, user_message, response.confidence
       elsif response.type == "action"
         action = response.action.not_nil!
-        logger.info "Executing action #{action}"
-        context = @actions.custom action, session_id, context.clone
+        logger.info "Executing action #{action} (#{response.confidence})"
+        context = @actions.custom action, session_id, context.clone, response.confidence
       elsif response.type == "error"
-        logger.info "Executing error"
-        return @actions.error session_id, context.clone, WitException.new("Error in converse call")
+        logger.info "Executing error (#{response.confidence})"
+        return @actions.error session_id, context.clone, WitException.new("Error in converse call"), response.confidence
       else
         raise WitException.new "Unknown converse type: #{response.type}"
       end
