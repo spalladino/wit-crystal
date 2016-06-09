@@ -14,7 +14,7 @@ if message.strip.empty?
   exit
 end
 
-client = Wit::App.new access_token, logger: Logger.new(STDOUT).tap { |l| l.level = Logger::WARN }
+client = Wit::App.new access_token, logger: Logger.new(STDOUT).tap { |l| l.level = Logger::DEBUG }
 response = client.message(message)
 puts "Extracted entities from '#{message}'"
 response.entities.each do |k,v|
