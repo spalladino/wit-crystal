@@ -73,8 +73,9 @@ module Wit
         return @actions.error(session_id, context, ex, 1.0)
       end
 
-      return context if response.type == "stop"
-      if response.type == "msg"
+      if response.type == "stop"
+        return @actions.stop session_id, context.clone, response.confidence
+      elsif response.type == "msg"
         msg = response.msg.not_nil!
         logger.info "Executing say with: #{msg} (#{response.confidence})"
         @actions.say session_id, context.clone, msg, response.confidence

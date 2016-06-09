@@ -9,6 +9,10 @@ module Wit
     abstract def error(session_id : String, context : Wit::State, error : WitException, confidence : Float64) : Wit::State
     abstract def custom(action_name : String, session_id : String, context : Wit::State, confidence : Float64) : Wit::State
 
+    def stop(session_id : String, context : Wit::State, confidence : Float64) : Wit::State
+      context
+    end
+
   end
 
   class NullActions
