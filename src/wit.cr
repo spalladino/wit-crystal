@@ -29,12 +29,19 @@ module Wit
 
     def converse(session_id : String, msg : String?, context : State? = nil)
       logger.debug "Converse request: session_id=#{session_id} msg='#{msg}' context=#{context}"
-      res = request "POST", "/converse", ConverseResponse, {"q" => msg, "session_id" => session_id}, context
+      res = request "POST", "/converse", ConverseResponse, {"q" => msg, "session_id" => session_id}, context.try(&.to_json)
       logger.debug "Converse response: #{res.inspect}"
       return res as ConverseResponse
     end
 
-    protected def request(method, path, obj, params, payload = nil)
+    def speech(data : Slice(UInt8), content_type : String, msg_id : String? = nil, thread_id : String? = nil)
+      logger.debug "Speech request: type=#{content_type}"
+      res = request "POST", "/speech", MessageResponse, { "msg_id" => msg_id, "thread_id" => thread_id }, String.new(data), content_type: content_type
+      logger.debug "Speech response: #{res.inspect}"
+      return res as MessageResponse
+    end
+
+    protected def request(method, path, obj, params, payload = nil, content_type = "application/json")
       uri = URI.parse(WIT_API_HOST)
       uri.path = path
       uri.query = HTTP::Params.build do |q|
@@ -46,9 +53,9 @@ module Wit
       headers = HTTP::Headers.new
       headers.add("authorization", "Bearer #{@access_token}")
       headers.add("accept", "application/vnd.wit.20160526+json")
-      headers.add("Content-Type", "application/json")
+      headers.add("Content-Type", content_type)
 
-      response = HTTP::Client.exec(method, uri, headers, payload.try(&.to_json))
+      response = HTTP::Client.exec(method, uri, headers, payload)
       raise WitException.new "HTTP error code=#{response.status_code}" unless response.success?
 
       begin
