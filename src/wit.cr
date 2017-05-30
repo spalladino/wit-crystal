@@ -24,7 +24,7 @@ module Wit
       params = { "q" => msg, "msg_id" => msg_id, "thread_id" => thread_id }
       res = request "GET", "/message", MessageResponse, params
       logger.debug "Message response: #{res.inspect}"
-      return res as MessageResponse
+      return res.as(MessageResponse)
     end
 
     def converse(session_id : String, msg : String?, context : State? = nil)
@@ -38,7 +38,7 @@ module Wit
       logger.debug "Speech request: type=#{content_type}"
       res = request "POST", "/speech", MessageResponse, { "msg_id" => msg_id, "thread_id" => thread_id }, String.new(data), content_type: content_type
       logger.debug "Speech response: #{res.inspect}"
-      return res as MessageResponse
+      return res.as(MessageResponse)
     end
 
     protected def request(method, path, obj, params, payload = nil, content_type = "application/json")
